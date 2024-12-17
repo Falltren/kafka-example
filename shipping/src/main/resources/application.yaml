@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   kafka:
@@ -7,7 +7,6 @@ spring:
 
 app:
   kafka:
-    orderTopic: new_orders
+    sentOrdersTopic: sent_orders
     paymentTopic: payed_orders
     kafkaMessageGroupId: kafka-message-group-id
-

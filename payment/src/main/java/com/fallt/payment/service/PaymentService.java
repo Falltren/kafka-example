@@ -31,8 +31,9 @@ public class PaymentService {
         }
         log.info("payment processing completed");
         try {
-            kafkaTemplate.send(paymentTopic, objectMapper.writeValueAsString(order));
-            log.info("Message {} sent to topic: {}", order, paymentTopic);
+            String message = objectMapper.writeValueAsString(order);
+            kafkaTemplate.send(paymentTopic, message);
+            log.info("Message: {} sent to topic: {}", message, paymentTopic);
         } catch (JsonProcessingException e) {
             log.error("Error converting order to json", e);
         }

@@ -5,4 +5,4 @@ spring:
 app:
   kafka:
     orderTopic: new_orders
-    kafkaMessageGroupId: "kafka-message-group-id"
+    kafkaMessageGroupId: kafka-message-group-id

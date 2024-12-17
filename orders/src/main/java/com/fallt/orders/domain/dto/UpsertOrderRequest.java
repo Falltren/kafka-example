@@ -13,5 +13,5 @@ import java.util.List;
 public class UpsertOrderRequest {
 
     private List<String> products = new ArrayList<>();
-    private Boolean cost;
+    private Double cost;
 }

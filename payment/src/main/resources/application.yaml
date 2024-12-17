@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   kafka:
     bootstrap-servers: localhost:9092
@@ -5,4 +8,6 @@ spring:
 app:
   kafka:
     orderTopic: new_orders
+    paymentTopic: payed_orders
     kafkaMessageGroupId: "kafka-message-group-id"
+

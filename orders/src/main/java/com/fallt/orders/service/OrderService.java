@@ -26,6 +26,7 @@ public class OrderService {
 
     public SuccessResponse create(UpsertOrderRequest request) {
         Order order = orderMapper.toEntity(request);
+        order.setStatus("NEW");
         log.info("Сохранили в бд новый заказ: {}", order);
         try {
             kafkaTemplate.send(orderTopicName, objectMapper.writeValueAsString(order));

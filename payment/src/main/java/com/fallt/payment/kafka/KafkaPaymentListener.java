@@ -18,11 +18,10 @@ public class KafkaPaymentListener {
     private final PaymentService paymentService;
     private final ObjectMapper objectMapper;
 
-    @KafkaListener(topics = "new_orders", containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
+    @KafkaListener(topics = "${app.kafka.orderTopic}", containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
     public void processOrder(ConsumerRecord<String, String> message) {
         String orderJson = message.value();
         log.info("Received order from new_orders: {}", orderJson);
-
         try {
             Order order = objectMapper.readValue(orderJson, Order.class);
             paymentService.payment(order);

@@ -24,16 +24,15 @@ public class PaymentService {
     public void payment(Order order) {
         log.info("payment processing started");
         try {
-            sleep(2000);
+            sleep(3000);
             order.setStatus("PAYED");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         log.info("payment processing completed");
-
         try {
             kafkaTemplate.send(paymentTopic, objectMapper.writeValueAsString(order));
-            log.info("Message sent: {}", order);
+            log.info("Message {} sent to topic: {}", order, paymentTopic);
         } catch (JsonProcessingException e) {
             log.error("Error converting order to json", e);
         }

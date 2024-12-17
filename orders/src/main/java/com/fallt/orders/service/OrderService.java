@@ -27,9 +27,11 @@ public class OrderService {
     public SuccessResponse create(UpsertOrderRequest request) {
         Order order = orderMapper.toEntity(request);
         order.setStatus("NEW");
-        log.info("Сохранили в бд новый заказ: {}", order);
+        log.info("Saved orders to database: {}", order);
         try {
-            kafkaTemplate.send(orderTopicName, objectMapper.writeValueAsString(order));
+            String message = objectMapper.writeValueAsString(order);
+            kafkaTemplate.send(orderTopicName, message);
+            log.info("Message: {} sent to topic: {}", message, orderTopicName);
         } catch (JsonProcessingException e) {
             log.error("Error converting order to json", e);
         }

@@ -24,7 +24,8 @@ public class ShippingKafkaListener {
 
     @KafkaListener(topics = "${app.kafka.paymentTopic}",
             containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory",
-            groupId = "${app.kafka.kafkaMessageGroupId}")
+            groupId = "${app.kafka.kafkaMessageGroupId}",
+            concurrency = "3")
     @RetryableTopic(
             attempts = "4",
             backoff = @Backoff(delay = 1000, multiplier = 2.0, maxDelay = 5000),

@@ -24,7 +24,8 @@ public class NotificationKafkaListener {
 
     @KafkaListener(topics = "${app.kafka.sentOrdersTopic}",
             containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory",
-            groupId = "${app.kafka.kafkaMessageGroupId}")
+            groupId = "${app.kafka.kafkaMessageGroupId}",
+            concurrency = "3")
     @RetryableTopic(
             attempts = "4",
             backoff = @Backoff(delay = 1000, multiplier = 2.0, maxDelay = 5000),
@@ -35,6 +36,7 @@ public class NotificationKafkaListener {
     public void processOrder(ConsumerRecord<String, String> message) {
         String orderJson = message.value();
         log.info("Received order from sent_orders: {}", orderJson);
+        log.info("Partition number is: {}", message.partition());
         try {
             Order order = objectMapper.readValue(orderJson, Order.class);
             notificationService.sendNotification(order);

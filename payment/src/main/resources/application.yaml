@@ -9,5 +9,5 @@ app:
   kafka:
     orderTopic: new_orders
     paymentTopic: payed_orders
-    kafkaMessageGroupId: kafka-message-group-id
+    kafkaMessageGroupId: payment-group
 

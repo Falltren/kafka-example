@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
+import org.springframework.kafka.retrytopic.DltStrategy;
+import org.springframework.kafka.retrytopic.TopicSuffixingStrategy;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,7 +22,16 @@ public class NotificationKafkaListener {
     private final ObjectMapper objectMapper;
     private final NotificationService notificationService;
 
-    @KafkaListener(topics = "${app.kafka.sentOrdersTopic}", containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
+    @KafkaListener(topics = "${app.kafka.sentOrdersTopic}",
+            containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory",
+            groupId = "${app.kafka.kafkaMessageGroupId}")
+    @RetryableTopic(
+            attempts = "4",
+            backoff = @Backoff(delay = 1000, multiplier = 2.0, maxDelay = 5000),
+            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
+            dltStrategy = DltStrategy.NO_DLT,
+            exclude = NullPointerException.class, traversingCauses = "true"
+    )
     public void processOrder(ConsumerRecord<String, String> message) {
         String orderJson = message.value();
         log.info("Received order from sent_orders: {}", orderJson);

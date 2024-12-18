@@ -9,4 +9,4 @@ app:
   kafka:
     sentOrdersTopic: sent_orders
     paymentTopic: payed_orders
-    kafkaMessageGroupId: kafka-message-group-id
+    kafkaMessageGroupId: shipping-group

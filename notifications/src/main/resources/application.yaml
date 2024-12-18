@@ -8,4 +8,4 @@ spring:
 app:
   kafka:
     sentOrdersTopic: sent_orders
-    kafkaMessageGroupId: kafka-message-group-id
+    kafkaMessageGroupId: notification-group

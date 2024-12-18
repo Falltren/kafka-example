@@ -1,5 +1,6 @@
 package com.fallt.shipping.configuration;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -25,6 +26,21 @@ public class KafkaConfig {
 
     @Value("${app.kafka.kafkaMessageGroupId}")
     private String kafkaMessageGroupId;
+
+    @Value("${app.kafka.numberOfPartition}")
+    private Integer numberOfPartitions;
+
+    @Value("${app.kafka.sentOrdersTopic}")
+    private String sentOrdersTopic;
+
+    @Bean
+    public NewTopic sentOrderTopic() {
+        return new NewTopic(
+                sentOrdersTopic,
+                numberOfPartitions,
+                (short) 3
+        );
+    }
 
     @Bean
     public ProducerFactory<String, String> kafkaMessageProducerFactory() {

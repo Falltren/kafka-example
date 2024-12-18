@@ -1,5 +1,6 @@
 package com.fallt.orders.configuration;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -22,6 +23,21 @@ public class KafkaConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
+
+    @Value("${app.kafka.numberOfPartition}")
+    private Integer numberOfPartition;
+
+    @Value("${app.kafka.orderTopic}")
+    private String ordersTopic;
+
+    @Bean
+    public NewTopic newOrdersTopic() {
+        return new NewTopic(
+                ordersTopic,
+                numberOfPartition,
+                (short) 3
+        );
+    }
 
     @Bean
     public ProducerFactory<String, String> kafkaMessageProducerFactory() {

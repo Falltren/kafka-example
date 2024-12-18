@@ -3,10 +3,11 @@ server:
 
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:19092, localhost:19093, localhost:19094
 
 app:
   kafka:
+    numberOfPartition: 3
     sentOrdersTopic: sent_orders
     paymentTopic: payed_orders
     kafkaMessageGroupId: shipping-group
